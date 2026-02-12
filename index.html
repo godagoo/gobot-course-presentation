@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Build Your AI Agent — Telegram Bot Course by Autonomee</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+:root {
+  --pres-bg-primary: #0a0a12;
+  --pres-bg-secondary: #111119;
+  --pres-bg-card: #16161f;
+  --pres-bg-card-hover: #1c1c28;
+  --pres-accent: #f0c040;
+  --pres-accent-light: #ffd966;
+  --pres-accent-dark: #d4a030;
+  --pres-pink: #EC4899;
+  --pres-text-primary: #FFFFFF;
+  --pres-text-secondary: rgba(255, 255, 255, 0.7);
+  --pres-text-muted: rgba(255, 255, 255, 0.5);
+  --pres-gradient-accent: linear-gradient(135deg, #f0c040 0%, #EC4899 100%);
+  --pres-gradient-hero: linear-gradient(135deg, #1a1a2e 0%, #0a0a12 50%, #1f1a06 100%);
+  --pres-gradient-glow: radial-gradient(ellipse at center, rgba(240, 192, 64, 0.1) 0%, transparent 70%);
+  --pres-border-color: rgba(255, 255, 255, 0.08);
+  --pres-border-radius: 12px;
+  --pres-spacing-xs: 8px;
+  --pres-spacing-sm: 16px;
+  --pres-spacing-md: 24px;
+  --pres-spacing-lg: 40px;
+  --pres-spacing-xl: 60px;
+  --pres-font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body { font-family: var(--pres-font-family); background: var(--pres-bg-primary); color: var(--pres-text-primary); margin: 0; -webkit-font-smoothing: antialiased; }
+.reveal { font-family: var(--pres-font-family); font-size: 24px; color: var(--pres-text-primary); }
+.reveal .slides { text-align: left; }
+.reveal .slides section { padding: 0; }
+
+.slide { height: 100%; width: 100%; padding: var(--pres-spacing-xl); box-sizing: border-box; display: flex; flex-direction: column; background: var(--pres-bg-primary); position: relative; overflow: hidden; }
+.slide::before { content: ''; position: absolute; top: -50%; right: -30%; width: 80%; height: 150%; background: var(--pres-gradient-glow); pointer-events: none; z-index: 0; }
+.slide > * { position: relative; z-index: 1; }
+.slide--center { align-items: center; justify-content: center; text-align: center; }
+.slide--gradient { background: var(--pres-gradient-hero); }
+.slide--gradient::before { background: radial-gradient(ellipse at 30% 50%, rgba(240, 192, 64, 0.15) 0%, transparent 60%); }
+
+.header { display: flex; justify-content: space-between; align-items: center; padding-bottom: var(--pres-spacing-md); margin-bottom: var(--pres-spacing-lg); flex-shrink: 0; }
+.header__logo { font-weight: 600; font-size: 0.875rem; color: var(--pres-text-secondary); }
+
+.kicker { font-size: 0.875rem; color: var(--pres-accent-light); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: var(--pres-spacing-sm); font-weight: 500; }
+h1, .h1 { font-size: 4.5rem; font-weight: 700; line-height: 1.1; margin: 0 0 var(--pres-spacing-md) 0; letter-spacing: -0.02em; }
+h2, .h2 { font-size: 3rem; font-weight: 700; line-height: 1.15; margin: 0 0 var(--pres-spacing-md) 0; letter-spacing: -0.02em; }
+h3, .h3 { font-size: 2rem; font-weight: 600; line-height: 1.3; margin: 0 0 var(--pres-spacing-sm) 0; }
+h4, .h4 { font-size: 1.25rem; font-weight: 600; margin: 0 0 var(--pres-spacing-xs) 0; }
+.lead { font-size: 1.25rem; color: var(--pres-text-secondary); line-height: 1.6; max-width: 700px; }
+.muted { color: var(--pres-text-muted); }
+.highlight { color: var(--pres-accent); }
+.gradient-text { background: var(--pres-gradient-accent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+.content { flex: 1; display: flex; flex-direction: column; }
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: var(--pres-spacing-xl); align-items: center; flex: 1; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--pres-spacing-md); }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--pres-spacing-md); }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+
+.card { background: var(--pres-bg-card); border: 1px solid var(--pres-border-color); border-radius: var(--pres-border-radius); padding: var(--pres-spacing-md); transition: all 0.2s ease; }
+.card--glow { box-shadow: 0 0 20px rgba(240, 192, 64, 0.15); border-color: rgba(240, 192, 64, 0.3); }
+.card__icon { width: 48px; height: 48px; margin-bottom: var(--pres-spacing-sm); color: var(--pres-accent); }
+.card__icon svg { width: 100%; height: 100%; }
+.card__title { font-size: 1.25rem; font-weight: 600; margin-bottom: var(--pres-spacing-xs); }
+.card__text { font-size: 1rem; color: var(--pres-text-secondary); line-height: 1.5; }
+
+.metric { text-align: center; padding: var(--pres-spacing-md); }
+.metric__value { font-size: 3.5rem; font-weight: 700; color: var(--pres-accent); line-height: 1; margin-bottom: var(--pres-spacing-xs); }
+.metric__label { font-size: 0.875rem; color: var(--pres-text-muted); }
+.metric--card { background: var(--pres-bg-card); border: 1px solid var(--pres-border-color); border-radius: var(--pres-border-radius); }
+
+.list { list-style: none; padding: 0; margin: 0; }
+.list li { padding: var(--pres-spacing-sm) 0; padding-left: var(--pres-spacing-lg); position: relative; border-bottom: 1px solid var(--pres-border-color); }
+.list li:last-child { border-bottom: none; }
+.list li::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 8px; height: 8px; background: var(--pres-accent); border-radius: 50%; }
+.list--check li::before { content: '\2713'; width: auto; height: auto; background: none; color: var(--pres-accent); font-weight: bold; }
+
+.badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 500; background: rgba(240, 192, 64, 0.15); color: var(--pres-accent-light); border: 1px solid rgba(240, 192, 64, 0.3); }
+
+.pricing { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--pres-spacing-md); }
+.pricing__card { background: var(--pres-bg-card); border: 1px solid var(--pres-border-color); border-radius: 20px; padding: var(--pres-spacing-lg); text-align: center; }
+.pricing__card--featured { border-color: var(--pres-accent); box-shadow: 0 0 40px rgba(240, 192, 64, 0.2); }
+.pricing__name { font-size: 1.25rem; font-weight: 600; margin-bottom: var(--pres-spacing-sm); }
+.pricing__price { font-size: 3rem; font-weight: 700; margin-bottom: var(--pres-spacing-xs); }
+.pricing__period { font-size: 0.875rem; color: var(--pres-text-muted); margin-bottom: var(--pres-spacing-md); }
+.pricing__features { list-style: none; padding: 0; margin: 0 0 var(--pres-spacing-md) 0; text-align: left; }
+.pricing__features li { padding: var(--pres-spacing-xs) 0; color: var(--pres-text-secondary); font-size: 0.875rem; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 24px; border-radius: 8px; font-size: 1rem; font-weight: 500; text-decoration: none; cursor: pointer; transition: all 0.2s ease; border: none; }
+.btn--primary { background: var(--pres-accent); color: #0a0a12; }
+.btn--outline { background: transparent; border: 1px solid var(--pres-border-color); color: var(--pres-text-primary); }
+
+.contact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--pres-spacing-lg); margin-top: var(--pres-spacing-xl); }
+.contact-item { text-align: center; }
+.contact-item__label { font-size: 0.875rem; color: var(--pres-text-muted); margin-bottom: var(--pres-spacing-xs); }
+.contact-item__value { font-size: 1rem; color: var(--pres-text-secondary); }
+.contact-item__value a { color: var(--pres-accent); text-decoration: none; }
+
+.reveal .controls { color: var(--pres-accent); }
+.reveal .progress { background: var(--pres-border-color); height: 3px; }
+.reveal .progress span { background: var(--pres-accent); }
+.reveal .slide-number { background: transparent; color: var(--pres-text-muted); font-size: 14px; right: 20px; bottom: 20px; }
+.reveal .slides section .fragment { opacity: 0; transition: all 0.4s ease; }
+.reveal .slides section .fragment.visible { opacity: 1; }
+.reveal .slides section .fragment.fade-up { transform: translateY(20px); }
+.reveal .slides section .fragment.fade-up.visible { transform: translateY(0); }
+
+.star { color: var(--pres-accent); }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<!-- SLIDE 1: TITLE -->
+<section>
+  <div class="slide slide--gradient slide--center">
+    <div class="header">
+      <div class="header__logo">Autonomee</div>
+    </div>
+    <div class="content flex-center" style="flex-direction: column; text-align: center;">
+      <p class="kicker">Telegram Bot Course</p>
+      <h1>Build an AI Agent You Can<br><span class="gradient-text">Call, Command &amp; Control</span></h1>
+      <p class="lead" style="max-width: 700px; margin: 0 auto;">
+        Not another chatbot. A personal AI that runs 24/7, connects to your tools, and takes action on your behalf.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 2: THE PROBLEM -->
+<section>
+  <div class="slide">
+    <div class="header">
+      <div class="header__logo">Autonomee</div>
+    </div>
+    <div class="split">
+      <div>
+        <p class="kicker">The Problem</p>
+        <h2>AI is powerful.<br>But it sits in a<br>browser tab.</h2>
+        <p class="lead">You close the tab, the AI is gone. No memory. No context. No initiative. Every conversation starts from zero.</p>
+      </div>
+      <div>
+        <ul class="list list--check">
+          <li class="fragment"><strong>No persistent memory</strong><br><span class="muted">Forgets everything between sessions</span></li>
+          <li class="fragment"><strong>No access to your tools</strong><br><span class="muted">Can't check your email, calendar, or tasks</span></li>
+          <li class="fragment"><strong>No initiative</strong><br><span class="muted">Only responds when you ask</span></li>
+          <li class="fragment"><strong>No mobile access</strong><br><span class="muted">Stuck on desktop, stuck in a browser</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 3: THE SOLUTION -->
+<section>
+  <div class="slide slide--gradient slide--center">
+    <p class="kicker">The Solution</p>
+    <h2>Your AI, in your pocket.<br>Always on. Always learning.</h2>
+    <p class="lead muted">A Telegram bot powered by Claude that remembers everything, connects to your tools, and reaches out when it matters.</p>
+  </div>
+</section>
+
+<!-- SLIDE 4: WHAT YOU BUILD -->
+<section>
+  <div class="slide">
+    <div class="header">
+      <div class="header__logo">Autonomee</div>
+    </div>
+    <div class="content">
+      <p class="kicker">What You Build</p>
+      <h2>An AI agent that actually works for you</h2>
+      <div class="grid-2" style="margin-top: 32px;">
+        <div class="card fragment fade-up">
+          <div class="card__icon"><i data-lucide="message-circle"></i></div>
+          <h4 class="card__title">Text, Voice &amp; Images</h4>
+          <p class="card__text">Chat naturally. Send voice notes. Share photos. Your bot understands all of it.</p>
+        </div>
+        <div class="card fragment fade-up">
+          <div class="card__icon"><i data-lucide="brain"></i></div>
+          <h4 class="card__title">Persistent Memory</h4>
+          <p class="card__text">Remembers your goals, preferences, and every conversation. Context that grows over time.</p>
+        </div>
+        <div class="card fragment fade-up">
+          <div class="card__icon"><i data-lucide="bell"></i></div>
+          <h4 class="card__title">Smart Check-ins</h4>
+          <p class="card__text">Proactive messages based on your goals and activity. Only when it has something useful to say.</p>
+        </div>
+        <div class="card fragment fade-up">
+          <div class="card__icon"><i data-lucide="sunrise"></i></div>
+          <h4 class="card__title">Morning Briefings</h4>
+          <p class="card__text">Start your day with a summary of what matters. One message, everything you need to know.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 5: FREE SETUP -->
+<section>
+  <div class="slide">
+    <div class="header">
+      <div class="header__logo">Autonomee</div>
+    </div>
+    <div class="content">
+      <p class="kicker">Free Mini Setup</p>
+      <h2>6 steps. A working AI agent.</h2>
+      <div class="grid-3" style="margin-top: 32px;">
+        <div class="card fragment fade-up">
+          <h4 class="card__title">1. Read Me First</h4>
+          <p class="card__text">What you're building, what you need, where to get the code.</p>
+        </div>
+        <div class="card fragment fade-up">
+          <h4 class="card__title">2. Install Tools</h4>
+          <p class="card__text">Bun (free) and Claude Code. Two tools, one command each.</p>
+        </div>
+        <div class="card fragment fade-up">
+          <h4 class="card__title">3. Create Your Bot</h4>
+          <p class="card__text">Clone the repo, create a bot on Telegram, connect.</p>
+        </div>
+        <div class="card fragment fade-up">
+          <h4 class="card__title">4. Memory</h4>
+          <p class="card__text">Connect Supabase. Your bot remembers everything.</p>
+        </div>
+        <div class="card fragment fade-up">
+          <h4 class="card__title">5. Test Your Bot</h4>
+          <p class="card__text">First message, check-ins, morning briefing.</p>
+        </div>
+        <div class="card fragment fade-up">
+          <h4 class="card__title">6. Background Services</h4>
+          <p class="card__text">Runs 24/7. Survives reboots. Always on.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 6: FULL VERSION DIVIDER -->
+<section>
+  <div class="slide slide--gradient slide--center">
+    <p class="kicker"><span class="star">&#9733;</span> Full Version</p>
+    <h2>Go further.<br>Way further.</h2>
+    <p class="lead muted">Voice calls. Live control. Proactive AI. Tool integrations. Multi-agent reasoning. Production deployment. New features weekly.</p>
+  </div>
+</section>
+
+<!-- SLIDE 7: VOICE & CALLS -->
+<section>
+  <div class="slide">
+    <div class="header">
+      <div class="header__logo">Autonomee</div>
+    </div>
+    <div class="split">
+      <div>
+        <p class="kicker"><span class="star">&#9733;</span> Module 7</p>
+        <h2>Voice &amp; Calls</h2>
+        <p class="lead">Send voice notes. Receive voice replies. Call your bot, tell it what to do, hang up — and watch it execute in real time.</p>
+        <ul class="list" style="margin-top: 24px;">
+          <li class="fragment">Voice messages in any language</li>
+          <li class="fragment">Phone calls through Telegram</li>
+          <li class="fragment">Call-to-task auto-execution</li>
+        </ul>
+      </div>
+      <div class="flex-center">
+        <div style="font-size: 8rem; opacity: 0.15;"><i data-lucide="phone" style="width:200px;height:200px;"></i></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 8: LIVE PROGRESS -->
+<section>
+  <div class="slide">
+    <div class="header">
+      <div class="header__logo">Autonomee</div>
+    </div>
+    <div class="split">
+      <div>
+        <p class="kicker"><span class="star">&#9733;</span> Module 8</p>
+        <h2>Live Progress<br>&amp; Control</h2>
+        <p class="lead">See what your AI is doing. Change direction mid-task. Approve actions before they happen.</p>
+        <ul class="list" style="margin-top: 24px;">
+          <li class="fragment">Real-time streaming progress</li>
+          <li class="fragment">Mid-task redirection</li>
+          <li class="fragment">Confirmation buttons for actions</li>
+        </ul>
+      </div>
+      <div class="flex-center">
+        <div style="font-size: 8rem; opacity: 0.15;"><i data-lucide="activity" style="width:200px;height:200px;"></i></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 9: PROACTIVE AI -->
+<section>
+  <div class="slide">
+    <div class="header">
+      <div class="header__logo">Autonomee</div>
+    </div>
+    <div class="split">
+      <div>
+        <p class="kicker"><span class="star">&#9733;</span> Module 9</p>
+        <h2>Proactive AI</h2>
+        <p class="lead">Check-ins powered by your real tools. Morning briefings from your actual email, calendar, and tasks. Only reaches out when it matters.</p>
+        <ul class="list" style="margin-top: 24px;">
+          <li class="fragment">Smart check-ins with real data</li>
+          <li class="fragment">Morning briefings from your tools</li>
+          <li class="fragment">Decision framework — no noise</li>
+        </ul>
+      </div>
+      <div class="flex-center">
+        <div style="font-size: 8rem; opacity: 0.15;"><i data-lucide="bell-ring" style="width:200px;height:200px;"></i></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 10: TOOL INTEGRATIONS -->
+<section>
+  <div class="slide">
+    <div class="header">
+      <div class="header__logo">Autonomee</div>
+    </div>
+    <div class="split">
+      <div>
+        <p class="kicker"><span class="star">&#9733;</span> Module 10</p>
+        <h2>Tool<br>Integrations</h2>
+        <p class="lead">Connect email, calendar, project management, documents — whatever you use. One Telegram chat to control it all.</p>
+        <ul class="list" style="margin-top: 24px;">
+          <li class="fragment">Any tool with an API</li>
+          <li class="fragment">Persistent image memory</li>
+          <li class="fragment">Confirmation before every action</li>
+        </ul>
+      </div>
+      <div class="flex-center">
+        <div style="font-size: 8rem; opacity: 0.15;"><i data-lucide="plug" style="width:200px;height:200px;"></i></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 11: MULTI-AGENT -->
+<section>
+  <div class="slide">
+    <div class="header">
+      <div class="header__logo">Autonomee</div>
+    </div>
+    <div class="content">
+      <p class="kicker"><span class="star">&#9733;</span> Module 11</p>
+      <h2>Multi-Agent System</h2>
+      <p class="lead" style="margin-bottom: 24px;">Your personal board of directors. Six agents, six reasoning frameworks.</p>
+      <div class="grid-3">
+        <div class="card fragment fade-up">
+          <h4 class="card__title">Research</h4>
+          <p class="card__text">Deep information gathering, market intelligence</p>
+        </div>
+        <div class="card fragment fade-up">
+          <h4 class="card__title">Content (CMO)</h4>
+          <p class="card__text">Video packaging, titles, audience growth</p>
+        </div>
+        <div class="card fragment fade-up">
+          <h4 class="card__title">Finance (CFO)</h4>
+          <p class="card__text">ROI analysis, deal evaluation, budgets</p>
+        </div>
+        <div class="card fragment fade-up">
+          <h4 class="card__title">Strategy (CEO)</h4>
+          <p class="card__text">Long-term decisions, roadmaps, pivots</p>
+        </div>
+        <div class="card fragment fade-up">
+          <h4 class="card__title">Critic</h4>
+          <p class="card__text">Stress-tests everything, finds the holes</p>
+        </div>
+        <div class="card fragment fade-up">
+          <h4 class="card__title">Orchestrator</h4>
+          <p class="card__text">Coordinates all agents, runs board meetings</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 12: DEPLOYMENT OPTIONS -->
+<section>
+  <div class="slide">
+    <div class="header">
+      <div class="header__logo">Autonomee</div>
+    </div>
+    <div class="content">
+      <p class="kicker"><span class="star">&#9733;</span> Module 12</p>
+      <h2>Three Ways to Run It</h2>
+      <div class="pricing" style="margin-top: 24px;">
+        <div class="pricing__card fragment">
+          <div class="pricing__name">Local</div>
+          <div class="pricing__price" style="font-size: 2.5rem;">$20</div>
+          <div class="pricing__period">Claude subscription</div>
+          <ul class="pricing__features">
+            <li>Runs on your computer</li>
+            <li>Free with subscription</li>
+            <li>Sleeps when you sleep</li>
+            <li>Best for trying it out</li>
+          </ul>
+        </div>
+        <div class="pricing__card pricing__card--featured fragment">
+          <span class="badge" style="margin-bottom: 12px;">Recommended</span>
+          <div class="pricing__name">Hybrid</div>
+          <div class="pricing__price" style="font-size: 2.5rem;">~$26</div>
+          <div class="pricing__period">subscription + server + API</div>
+          <ul class="pricing__features">
+            <li>Server catches messages 24/7</li>
+            <li>Free processing when awake</li>
+            <li>API only when you sleep</li>
+            <li>Best value, always on</li>
+          </ul>
+        </div>
+        <div class="pricing__card fragment">
+          <div class="pricing__name">VPS Only</div>
+          <div class="pricing__price" style="font-size: 2.5rem;">~$20</div>
+          <div class="pricing__period">server + API usage</div>
+          <ul class="pricing__features">
+            <li>Cloud server 24/7</li>
+            <li>No subscription needed</li>
+            <li>Fast or full mode</li>
+            <li>Best for always-on</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 13: METRICS -->
+<section>
+  <div class="slide">
+    <div class="header">
+      <div class="header__logo">Autonomee</div>
+    </div>
+    <div class="content" style="justify-content: center;">
+      <p class="kicker">Open Source Foundation</p>
+      <h2>Built in public. Growing fast.</h2>
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--pres-spacing-md); margin-top: 48px;">
+        <div class="metric metric--card fragment">
+          <div class="metric__value">170+</div>
+          <div class="metric__label">GitHub Stars</div>
+        </div>
+        <div class="metric metric--card fragment">
+          <div class="metric__value">74</div>
+          <div class="metric__label">Forks</div>
+        </div>
+        <div class="metric metric--card fragment">
+          <div class="metric__value">6</div>
+          <div class="metric__label">Free Lessons</div>
+        </div>
+        <div class="metric metric--card fragment">
+          <div class="metric__value">6</div>
+          <div class="metric__label">Full Modules</div>
+        </div>
+      </div>
+      <p class="muted" style="margin-top: 32px; font-size: 1rem;">New features ship weekly. Driven by what the community actually needs.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE 14: CTA -->
+<section>
+  <div class="slide slide--gradient slide--center">
+    <div class="header">
+      <div class="header__logo">Autonomee</div>
+    </div>
+    <div class="content flex-center" style="flex-direction: column;">
+      <h1>Start building<br><span class="gradient-text">your AI agent</span></h1>
+      <p class="lead" style="margin: 0 auto 32px auto; max-width: 600px;">Free mini setup gets you running. Full version takes you further. Community keeps you going.</p>
+      <div class="contact-grid" style="width: 100%; max-width: 800px;">
+        <div class="contact-item">
+          <div class="contact-item__label">Course</div>
+          <div class="contact-item__value"><a href="https://autonomee.ai/telegram-bot-course/">autonomee.ai</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item__label">Community</div>
+          <div class="contact-item__value"><a href="https://skool.com/autonomee">skool.com/autonomee</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item__label">YouTube</div>
+          <div class="contact-item__value"><a href="https://youtube.com/@GodaGo">@GodaGo</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: true,
+      controls: true,
+      controlsLayout: 'bottom-right',
+      controlsBackArrows: 'faded',
+      progress: true,
+      center: false,
+      transition: 'slide',
+      backgroundTransition: 'fade',
+      width: 1280,
+      height: 720,
+      margin: 0,
+      minScale: 0.2,
+      maxScale: 2,
+      autoAnimate: true,
+      autoAnimateDuration: 0.7
+    });
+    lucide.createIcons();
+  </script>
+</body>
+</html>
